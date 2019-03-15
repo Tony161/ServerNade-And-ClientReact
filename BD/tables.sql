@@ -25,4 +25,4 @@ INSERT INTO People (id, name, surname, company)
     VALUES (5, 'Evgeny', 'Danilov', 'Ukos');
 
 ALTER TABLE People
-  ADD img varchar(150) NULL;
+  ADD image varchar(150) NULL;

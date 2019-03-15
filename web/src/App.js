@@ -9,12 +9,15 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.loadData();
+  }
+
+  loadData = () =>
     axios.get('http://localhost:3003/persons').then(response => {
       this.setState({
         data: response.data,
       });
     });
-  }
 
   deleteBtn = id => {
     axios.delete(`http://localhost:3003/persons/${id}`).then(response => {
@@ -36,7 +39,7 @@ class App extends Component {
           data: response.data,
         });
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   };
@@ -53,7 +56,7 @@ class App extends Component {
           data: response.data,
         });
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   };
@@ -66,6 +69,7 @@ class App extends Component {
           deleteHandler={this.deleteBtn}
           addHandler={this.addBtn}
           editHandler={this.editBtn}
+          loadHandler={this.loadData}
         />
       </div>
     );

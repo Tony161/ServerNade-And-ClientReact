@@ -4,7 +4,7 @@ import CoreTable from './coreTable';
 
 class Table extends Component {
   render() {
-    const { data, deleteHandler, addHandler, editHandler } = this.props;
+    const { data, deleteHandler, addHandler, editHandler, loadHandler } = this.props;
 
     return (
       <table>
@@ -14,6 +14,8 @@ class Table extends Component {
             <th>Name</th>
             <th>Surname</th>
             <th>Company</th>
+            <th>Avatar</th>
+            <th />
             <th />
             <th />
           </tr>
@@ -25,6 +27,7 @@ class Table extends Component {
               row={row}
               deleteHandler={deleteHandler}
               editHandler={editHandler}
+              loadHandler={loadHandler}
             />
           ))}
           <tr>
@@ -50,6 +53,7 @@ class Table extends Component {
                 ref={input => (this.company = input)}
               />
             </td>
+            <td>&nbsp;</td>
             <td>
               <button
                 onClick={() =>
