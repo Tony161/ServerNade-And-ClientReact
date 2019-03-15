@@ -20,7 +20,6 @@ var storage = multer.diskStorage({
     connection.query(query, (err, rows, fields) => {
       if (!err) {
         if (rows[0].image) {
-					console.log(rows[0].image);
           fs.unlinkSync(`./images/${rows[0].image}`);
         }
         const updateQuery = `UPDATE People SET image ='${newName}' WHERE id='${partsID[partsID.length - 1]}'`;
