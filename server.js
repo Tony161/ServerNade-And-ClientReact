@@ -8,6 +8,21 @@ const multer = require('multer');
 md5 = require('js-md5');
 var fs = require('fs');
 
+const deleteFile = (id, connection, callback) => {
+  var query = `SELECT image from People where id='${id}'`;
+  connection.query(query, (err, rows, fields) => {
+    if (!err) {
+      const fileName = `./images/${rows[0].image}`;
+      if (rows[0].image && fs.existsSync(fileName)) {
+        fs.unlinkSync(fileName);
+      }
+      callback();
+    } else {
+      console.log(err);
+    }
+  });
+}
+
 var storage = multer.diskStorage({
   destination: 'images/',
   filename: (req, file, cb) => {
@@ -16,21 +31,12 @@ var storage = multer.diskStorage({
     cb(null, newName)
     var partsID = file.fieldname.split('-');
     var connection = connect();
-    var query = `SELECT image from People where id='${partsID[partsID.length - 1]}'`;
-    connection.query(query, (err, rows, fields) => {
-      if (!err) {
-        if (rows[0].image) {
-					console.log(rows[0].image);
-          fs.unlinkSync(`./images/${rows[0].image}`);
-        }
-        const updateQuery = `UPDATE People SET image ='${newName}' WHERE id='${partsID[partsID.length - 1]}'`;
-        connection.query(updateQuery, function (error, results, fields) {
-          if (error) throw error;
-          connection.end();
-        });
-      } else {
-        console.log(err);
-      }
+    deleteFile(partsID[1], connection, () => {
+      const updateQuery = `UPDATE People SET image ='${newName}' WHERE id='${partsID[1]}'`;
+      connection.query(updateQuery, function (error, results, fields) {
+        if (error) throw error;
+        connection.end();
+      });
     });
   }
 })
@@ -95,10 +101,12 @@ app.put('/persons/:id', (req, res) => {
 
 app.delete('/persons/:id', (req, res, next) => {
   var connection = connect();
-  var query = `DELETE from People where id = '${req.params.id}'`;
-  connection.query(query, function (error, results, fields) {
-    if (error) throw error;
-    select(connection, res);
+  deleteFile(req.params.id, connection, () => {
+    var query = `DELETE from People where id = '${req.params.id}'`;
+    connection.query(query, function (error, results, fields) {
+      if (error) throw error;
+      select(connection, res);
+    });
   });
 });
 
