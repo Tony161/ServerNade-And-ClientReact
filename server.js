@@ -50,8 +50,8 @@ var storage = multer.diskStorage({
         });
       } else {
         console.log(err);
-      }
-    });
+       });
+    })
   }
 })
 
