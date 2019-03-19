@@ -37,20 +37,6 @@ var storage = multer.diskStorage({
         if (error) throw error;
         connection.end();
       });
-    var query = `SELECT image from People where id='${partsID[partsID.length - 1]}'`;
-    connection.query(query, (err, rows, fields) => {
-      if (!err) {
-        if (rows[0].image) {
-          fs.unlinkSync(`./images/${rows[0].image}`);
-        }
-        const updateQuery = `UPDATE People SET image ='${newName}' WHERE id='${partsID[partsID.length - 1]}'`;
-        connection.query(updateQuery, function (error, results, fields) {
-          if (error) throw error;
-          connection.end();
-        });
-      } else {
-        console.log(err);
-       });
     })
   }
 })
