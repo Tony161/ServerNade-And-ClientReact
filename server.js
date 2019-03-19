@@ -31,14 +31,12 @@ var storage = multer.diskStorage({
     cb(null, newName)
     var partsID = file.fieldname.split('-');
     var connection = connect();
-<<<<<<< HEAD
     deleteFile(partsID[1], connection, () => {
       const updateQuery = `UPDATE People SET image ='${newName}' WHERE id='${partsID[1]}'`;
       connection.query(updateQuery, function (error, results, fields) {
         if (error) throw error;
         connection.end();
       });
-=======
     var query = `SELECT image from People where id='${partsID[partsID.length - 1]}'`;
     connection.query(query, (err, rows, fields) => {
       if (!err) {
@@ -53,7 +51,6 @@ var storage = multer.diskStorage({
       } else {
         console.log(err);
       }
->>>>>>> f4f9c5f8af1a4a033cc247ded525ec76cd1dbbb3
     });
   }
 })
